@@ -22,9 +22,9 @@ using PokemonCalc.Core;
 
 // Simple damage calculation
 var result = PokemonCalculator.CalculateDamage(
-    attackerSpecies: "Pikachu",
-    defenderSpecies: "Charizard",
-    moveName: "Thunderbolt"
+    attackerSpecies: "皮卡丘",
+    defenderSpecies: "喷火龙",
+    moveName: "十万伏特"
 );
 
 Console.WriteLine($"Damage: {result.MinDamage}-{result.MaxDamage}");
@@ -43,9 +43,9 @@ var attackerSettings = new PokemonSettings(
 );
 
 var result = PokemonCalculator.CalculateDamage(
-    attackerSpecies: "Pikachu",
-    defenderSpecies: "Blastoise",
-    moveName: "Thunderbolt",
+    attackerSpecies: "皮卡丘",
+    defenderSpecies: "水箭龟",
+    moveName: "十万伏特",
     attackerSettings: attackerSettings
 );
 ```
@@ -54,18 +54,18 @@ var result = PokemonCalculator.CalculateDamage(
 
 ```csharp
 var garchomp = PokemonCalculator.CreatePokemon()
-    .WithSpecies("Garchomp")
+    .WithSpecies("烈咬陆鲨")
     .WithLevel(100)
     .WithNature(Nature.Jolly)
     .WithEVs(attack: 252, speed: 252, hp: 4)
-    .WithAbility("Rough Skin")
+    .WithAbility("粗糙皮肤")
     .WithItem("Choice Band")
     .Build();
 
 var result = PokemonCalculator.CalculateDamage(
     attacker: garchomp,
     defender: metagross,
-    moveName: "Earthquake"
+    moveName: "地震"
 );
 ```
 
@@ -79,9 +79,9 @@ var battleSettings = new BattleSettings(
 );
 
 var result = PokemonCalculator.CalculateDamage(
-    attackerSpecies: "Blastoise",
-    defenderSpecies: "Charizard", 
-    moveName: "Surf",
+    attackerSpecies: "水箭龟",
+    defenderSpecies: "喷火龙", 
+    moveName: "冲浪",
     battleSettings: battleSettings
 );
 ```
@@ -132,7 +132,7 @@ var result = PokemonCalculator.CalculateDamage(
 - ❌ Z-moves and Dynamax (planned)
 
 ### Sample Data
-- ✅ 6 Pokemon species (Pikachu, Charizard, Blastoise, Venusaur, Garchomp, Metagross)
+- ✅ 6 Pokemon species (皮卡丘, 喷火龙, 水箭龟, 妙蛙花, 烈咬陆鲨, 巨金怪)
 - ✅ 8 moves covering different types and categories
 - ❌ Full Pokedex (would require extensive data import)
 

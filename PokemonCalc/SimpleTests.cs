@@ -32,15 +32,15 @@ public static class SimpleTests
         
         var stats = Core.Stats.CalculateStats(baseStats, ivs, evs, 100, Nature.Serious);
         
-        Console.WriteLine($"Garchomp Level 100 stats (Serious nature, 31 IVs, 0 EVs):");
+        Console.WriteLine($"烈咬陆鲨种族值 (Garchomp Level 100 stats) (严肃性格, 31个体值, 0努力值):");
         Console.WriteLine($"HP: {stats.HP} (expected ~291)");
         Console.WriteLine($"Attack: {stats.Attack} (expected ~317)");
         Console.WriteLine($"Defense: {stats.Defense} (expected ~216)");
         
         // Test with nature modifiers
         var jollyStats = Core.Stats.CalculateStats(baseStats, ivs, evs, 100, Nature.Jolly);
-        Console.WriteLine($"Jolly Garchomp Speed: {jollyStats.Speed} (expected ~367, +10% from 334)");
-        Console.WriteLine($"Jolly Garchomp SpA: {jollyStats.SpecialAttack} (expected ~176, -10% from 196)");
+        Console.WriteLine($"爽朗烈咬陆鲨速度: {jollyStats.Speed} (expected ~367, +10% from 334)");
+        Console.WriteLine($"爽朗烈咬陆鲨特攻: {jollyStats.SpecialAttack} (expected ~176, -10% from 196)");
     }
 
     private static void TestTypeEffectiveness()
@@ -74,12 +74,12 @@ public static class SimpleTests
         Console.WriteLine("\n3. Testing damage calculation...");
         
         var result = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Garchomp",
-            defenderSpecies: "Charizard",
-            moveName: "Earthquake"
+            attackerSpecies: "烈咬陆鲨",
+            defenderSpecies: "喷火龙",
+            moveName: "地震"
         );
         
-        Console.WriteLine($"Garchomp Earthquake vs Charizard:");
+        Console.WriteLine($"烈咬陆鲨地震 vs 喷火龙:");
         Console.WriteLine($"Damage: {result.MinDamage}-{result.MaxDamage} (avg: {result.AverageDamage:F1})");
         Console.WriteLine($"Type effectiveness: {result.TypeEffectiveness}x");
         
@@ -92,16 +92,16 @@ public static class SimpleTests
         Console.WriteLine("\n4. Testing critical hits...");
         
         var normalResult = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Pikachu",
-            defenderSpecies: "Charizard",
-            moveName: "Thunderbolt",
+            attackerSpecies: "皮卡丘",
+            defenderSpecies: "喷火龙",
+            moveName: "十万伏特",
             battleSettings: new BattleSettings(IsCriticalHit: false)
         );
         
         var critResult = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Pikachu",
-            defenderSpecies: "Charizard",
-            moveName: "Thunderbolt", 
+            attackerSpecies: "皮卡丘",
+            defenderSpecies: "喷火龙",
+            moveName: "十万伏特", 
             battleSettings: new BattleSettings(IsCriticalHit: true)
         );
         
@@ -115,22 +115,22 @@ public static class SimpleTests
         Console.WriteLine("\n5. Testing weather effects...");
         
         var normalResult = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Charizard",
-            defenderSpecies: "Venusaur",
-            moveName: "Flamethrower"
+            attackerSpecies: "喷火龙",
+            defenderSpecies: "妙蛙花",
+            moveName: "喷射火焰"
         );
         
         var sunResult = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Charizard",
-            defenderSpecies: "Venusaur",
-            moveName: "Flamethrower",
+            attackerSpecies: "喷火龙",
+            defenderSpecies: "妙蛙花",
+            moveName: "喷射火焰",
             battleSettings: new BattleSettings(Weather: WeatherType.Sun)
         );
         
         var rainResult = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Charizard",
-            defenderSpecies: "Venusaur",
-            moveName: "Flamethrower",
+            attackerSpecies: "喷火龙",
+            defenderSpecies: "妙蛙花",
+            moveName: "喷射火焰",
             battleSettings: new BattleSettings(Weather: WeatherType.Rain)
         );
         

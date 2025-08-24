@@ -23,9 +23,9 @@ public class Program
         // Example 1: Simple calculation
         Console.WriteLine("Example 1: Basic damage calculation");
         var result1 = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Pikachu",
-            defenderSpecies: "Charizard", 
-            moveName: "Thunderbolt"
+            attackerSpecies: "皮卡丘",
+            defenderSpecies: "喷火龙", 
+            moveName: "十万伏特"
         );
         
         PrintDamageResult(result1);
@@ -47,9 +47,9 @@ public class Program
         );
 
         var result2 = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Pikachu",
-            defenderSpecies: "Blastoise",
-            moveName: "Thunderbolt",
+            attackerSpecies: "皮卡丘",
+            defenderSpecies: "水箭龟",
+            moveName: "十万伏特",
             attackerSettings: attackerSettings,
             defenderSettings: defenderSettings
         );
@@ -65,9 +65,9 @@ public class Program
         );
 
         var result3 = PokemonCalculator.CalculateDamage(
-            attackerSpecies: "Blastoise",
-            defenderSpecies: "Charizard",
-            moveName: "Surf",
+            attackerSpecies: "水箭龟",
+            defenderSpecies: "喷火龙",
+            moveName: "冲浪",
             battleSettings: battleSettings
         );
 
@@ -77,26 +77,26 @@ public class Program
         // Example 4: Using the builder pattern
         Console.WriteLine("Example 4: Using Pokemon builder");
         var attacker = PokemonCalculator.CreatePokemon()
-            .WithSpecies("Garchomp")
+            .WithSpecies("烈咬陆鲨")
             .WithLevel(100)
             .WithNature(Nature.Jolly)
             .WithEVs(attack: 252, speed: 252, hp: 4)
-            .WithAbility("Rough Skin")
+            .WithAbility("粗糙皮肤")
             .WithItem("Choice Band")
             .Build();
 
         var defender = PokemonCalculator.CreatePokemon()
-            .WithSpecies("Metagross")
+            .WithSpecies("巨金怪")
             .WithLevel(100)
             .WithNature(Nature.Adamant)
             .WithEVs(hp: 252, attack: 252, defense: 4)
-            .WithAbility("Clear Body")
+            .WithAbility("恒净之躯")
             .Build();
 
         var result4 = PokemonCalculator.CalculateDamage(
             attacker: attacker,
             defender: defender,
-            moveName: "Earthquake"
+            moveName: "地震"
         );
 
         PrintDamageResult(result4);
