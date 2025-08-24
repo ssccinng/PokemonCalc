@@ -133,7 +133,7 @@ public static class PokemonCalculator
     {
         var attacker = BuildPokemon(attackerSpecies, attackerSettings);
         var defender = BuildPokemon(defenderSpecies, defenderSettings);
-        var move = SampleMoves.GetByName(moveName) 
+        var move = AllMoves.GetByName(moveName) 
             ?? throw new ArgumentException($"Unknown move: {moveName}");
 
         var field = new Field(
@@ -161,7 +161,7 @@ public static class PokemonCalculator
         string moveName,
         BattleSettings? battleSettings = null)
     {
-        var move = SampleMoves.GetByName(moveName)
+        var move = AllMoves.GetByName(moveName)
             ?? throw new ArgumentException($"Unknown move: {moveName}");
 
         var field = new Field(
@@ -229,7 +229,19 @@ public static class PokemonCalculator
     /// Get available move names
     /// </summary>
     public static IEnumerable<string> GetAvailableMoves() => 
-        SampleMoves.GetAll().Select(m => m.Name);
+        AllMoves.GetAll().Select(m => m.Name);
+
+    /// <summary>
+    /// Get available ability names
+    /// </summary>
+    public static IEnumerable<string> GetAvailableAbilities() => 
+        AllAbilities.GetAll().Select(a => a.Name);
+
+    /// <summary>
+    /// Get available item names
+    /// </summary>
+    public static IEnumerable<string> GetAvailableItems() => 
+        AllItems.GetAll().Select(i => i.Name);
 }
 
 /// <summary>

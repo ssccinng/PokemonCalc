@@ -8,99 +8,99 @@ using PokemonCalc.Core;
 public static class SampleMoves
 {
     public static readonly Move Thunderbolt = new(
-        Name: "十万伏特",
+        Name: "Thunderbolt",
         Type: PokemonType.Electric,
         Category: MoveCategory.Special,
         BasePower: 90,
         Accuracy: 100,
         PP: 15,
-        Description: "向对手发出强力的电击。有时会让对手陷入麻痹状态。"
+        Description: "A strong electric blast that may also leave the foe paralyzed."
     );
 
     public static readonly Move Flamethrower = new(
-        Name: "喷射火焰",
+        Name: "Flamethrower",
         Type: PokemonType.Fire,
         Category: MoveCategory.Special,
         BasePower: 90,
         Accuracy: 100,
         PP: 15,
-        Description: "向对手喷射烈焰进行攻击。有时会让对手陷入灼伤状态。"
+        Description: "The target is scorched with an intense blast of fire."
     );
 
     public static readonly Move Surf = new(
-        Name: "冲浪",
+        Name: "Surf",
         Type: PokemonType.Water,
         Category: MoveCategory.Special,
         BasePower: 90,
         Accuracy: 100,
         PP: 15,
-        Description: "利用大浪攻击自己周围所有的宝可梦。"
+        Description: "The user attacks everything around it by swamping its surroundings with a giant wave."
     );
 
     public static readonly Move Earthquake = new(
-        Name: "地震",
+        Name: "Earthquake",
         Type: PokemonType.Ground,
         Category: MoveCategory.Physical,
         BasePower: 100,
         Accuracy: 100,
         PP: 10,
-        Description: "引发地震，攻击自己周围所有的宝可梦。"
+        Description: "The user sets off an earthquake that strikes every Pokémon around it."
     );
 
     public static readonly Move DragonClaw = new(
-        Name: "龙爪",
+        Name: "Dragon Claw",
         Type: PokemonType.Dragon,
         Category: MoveCategory.Physical,
         BasePower: 80,
         Accuracy: 100,
         PP: 15,
-        Description: "用尖锐的巨爪撕裂对手进行攻击。",
+        Description: "The user slashes the target with huge, sharp claws.",
         MakesContact: true
     );
 
     public static readonly Move MetalClaw = new(
-        Name: "金属爪",
+        Name: "Metal Claw",
         Type: PokemonType.Steel,
         Category: MoveCategory.Physical,
         BasePower: 50,
         Accuracy: 95,
         PP: 35,
-        Description: "用钢铁之爪进行攻击。有时会提高自己的攻击。",
+        Description: "The target is raked with steel claws.",
         MakesContact: true
     );
 
     public static readonly Move QuickAttack = new(
-        Name: "电光一闪",
+        Name: "Quick Attack",
         Type: PokemonType.Normal,
         Category: MoveCategory.Physical,
         BasePower: 40,
         Accuracy: 100,
         PP: 30,
-        Description: "以迅雷不及掩耳之势扑向对手。必定能够先制攻击。",
+        Description: "The user lunges at the target at a speed that makes it almost invisible.",
         Priority: 1,
         MakesContact: true
     );
 
     public static readonly Move Psychic = new(
-        Name: "精神强念",
+        Name: "Psychic",
         Type: PokemonType.Psychic,
         Category: MoveCategory.Special,
         BasePower: 90,
         Accuracy: 100,
         PP: 10,
-        Description: "向对手发出强大的念力进行攻击。有时会降低对手的特防。"
+        Description: "The target is hit by a strong telekinetic force."
     );
 
     private static readonly Dictionary<string, Move> _movesLookup = new(StringComparer.OrdinalIgnoreCase)
     {
-        { "十万伏特", Thunderbolt },
-        { "喷射火焰", Flamethrower },
-        { "冲浪", Surf },
-        { "地震", Earthquake },
-        { "龙爪", DragonClaw },
-        { "金属爪", MetalClaw },
-        { "电光一闪", QuickAttack },
-        { "精神强念", Psychic }
+        { "Thunderbolt", Thunderbolt },
+        { "Flamethrower", Flamethrower },
+        { "Surf", Surf },
+        { "Earthquake", Earthquake },
+        { "Dragon Claw", DragonClaw },
+        { "Metal Claw", MetalClaw },
+        { "Quick Attack", QuickAttack },
+        { "Psychic", Psychic }
     };
 
     public static Move? GetByName(string name) => 
