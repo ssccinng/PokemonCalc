@@ -4,6 +4,23 @@ PokemonCalc is a .NET 9.0 class library project containing Pokemon calculation f
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
+## Domain Context & Purpose
+
+This library is designed to provide Pokemon battle calculation functionality, similar to Smogon's damage calculator. Core areas include:
+
+- **Damage Calculations**: Physical/Special attack damage with modifiers (STAB, type effectiveness, weather, abilities, items)
+- **Pokemon Data Models**: Species stats, types, abilities, moves, natures, items
+- **Battle Mechanics**: Status effects, boosts, field conditions, generation-specific mechanics
+- **Stat Calculations**: Base stats + IVs/EVs + nature + level → final stats
+
+Reference implementation patterns from: https://github.com/smogon/damage-calc/tree/master/calc/src
+
+### Key Pokemon Concepts to Model
+- **Pokemon**: Species, level, nature, ability, item, stats (HP/Atk/Def/SpA/SpD/Spe), IVs, EVs, status
+- **Moves**: Base power, type, category (Physical/Special/Status), accuracy, effects
+- **Battle Context**: Weather, terrain, field effects, generation rules
+- **Type System**: 18 types with effectiveness multipliers (0x, 0.5x, 1x, 2x)
+
 ## Working Effectively
 
 ### Prerequisites and Environment Setup
@@ -90,6 +107,64 @@ PokemonCalc/
 - Verify build succeeds in both Debug and Release configurations
 - If working with .NET 8.0 environment, test with target framework temporarily changed to `net8.0`
 - Ensure any new public APIs are properly documented with XML comments
+- **Pokemon-specific**: Validate calculations against known expected results when possible
+- **API Design**: Follow C# naming conventions (PascalCase for public members, camelCase for parameters)
+
+## API Design Guidelines
+
+### Pokemon-Specific Patterns
+- Use `enum` for fixed sets like `PokemonType`, `Nature`, `StatusCondition`
+- Use `readonly struct` for value types like `Stats`, `Individual Values (IVs)`, `Effort Values (EVs)`
+- Use `class` for complex entities like `Pokemon`, `Move`, `BattleContext`
+- Implement `IEquatable<T>` for value types that need comparison
+- Use nullable reference types (`string?`, `Pokemon?`) for optional properties
+
+### Naming Conventions
+- **Classes**: `Pokemon`, `DamageCalculator`, `BattleField`, `TypeEffectiveness`
+- **Properties**: `BaseAttack`, `CurrentHP`, `IsShiny`, `HasStatusCondition`
+- **Methods**: `CalculateDamage()`, `ApplyStatusEffect()`, `GetTypeEffectiveness()`
+- **Events**: `StatsChanged`, `HPUpdated`, `StatusApplied`
+
+### Input Validation
+- Always validate Pokemon level (1-100), stats (0-65535), IVs (0-31), EVs (0-252, max 510 total)
+- Throw `ArgumentOutOfRangeException` for invalid ranges
+- Throw `ArgumentException` for invalid combinations (e.g., incompatible ability + species)
+- Use `ArgumentNullException.ThrowIfNull()` for required reference parameters
+
+### Calculation Accuracy
+- Use `decimal` for precise calculations where accuracy matters
+- Use `int` for discrete values (level, base power, stats)
+- Round damage calculations using standard Pokemon rounding rules (floor for most cases)
+- Document any approximations or generation-specific differences
+
+## Pokemon Calculation Examples
+
+### Basic Stat Calculation
+```csharp
+public static int CalculateStat(StatType statType, int baseValue, int iv, int ev, 
+    int level, Nature nature)
+{
+    // HP has different formula than other stats
+    if (statType == StatType.HP)
+        return (2 * baseValue + iv + ev / 4) * level / 100 + level + 10;
+    
+    var baseStat = (2 * baseValue + iv + ev / 4) * level / 100 + 5;
+    var natureMultiplier = nature.GetMultiplier(statType);
+    return (int)(baseStat * natureMultiplier);
+}
+```
+
+### Type Effectiveness
+```csharp
+public decimal GetEffectiveness(PokemonType attackType, PokemonType defenseType1, 
+    PokemonType? defenseType2 = null)
+{
+    var effectiveness = TypeChart[attackType][defenseType1];
+    if (defenseType2.HasValue)
+        effectiveness *= TypeChart[attackType][defenseType2.Value];
+    return effectiveness;
+}
+```
 
 ### Troubleshooting
 - **Build fails with .NET version error**: Modify target framework to match available SDK version
@@ -106,3 +181,45 @@ PokemonCalc/
 - **Test**: < 1 second (no tests currently)
 
 **NEVER CANCEL** any of these operations. Always set timeouts to at least double the expected time to account for network operations and system load.
+
+## Testing & Validation Guidelines
+
+### Unit Testing Standards
+When adding tests (currently none exist):
+- Use xUnit as the testing framework: `dotnet add package Microsoft.NET.Test.Sdk xunit xunit.runner.visualstudio`
+- Test Pokemon calculations against known correct values from Smogon or Pokemon Showdown
+- Use `Theory` and `InlineData` for testing multiple scenarios efficiently
+- Group tests by functionality: `StatCalculationTests`, `DamageCalculationTests`, `TypeEffectivenessTests`
+
+### Validation Examples
+```csharp
+[Theory]
+[InlineData(100, 31, 252, 50, Nature.Adamant, StatType.Attack, 183)] // Adamant 50 ATK
+[InlineData(100, 31, 0, 50, Nature.Modest, StatType.Attack, 122)]   // Modest 50 ATK
+public void CalculateStat_ReturnsExpectedValue(int baseAttack, int iv, int ev, 
+    int level, Nature nature, StatType statType, int expected)
+{
+    var result = StatCalculator.CalculateStat(statType, baseAttack, iv, ev, level, nature);
+    Assert.Equal(expected, result);
+}
+```
+
+### Manual Verification Process
+1. **Compare with Reference**: Cross-check calculations with Pokemon Showdown or Smogon calculator
+2. **Edge Cases**: Test level 1, level 100, 0 IVs, 31 IVs, no EVs, max EVs combinations  
+3. **Type Interactions**: Verify dual-type effectiveness (e.g., Flying/Fire vs Rock = 2x × 2x = 4x)
+4. **Generation Differences**: Document which generation's mechanics are implemented
+
+## Tool Integration
+
+### Using These Instructions Effectively
+- **Context Matters**: When asking for Pokemon calculation help, mention the generation and specific mechanic
+- **Code Examples**: Prefer showing working code over abstract descriptions
+- **Reference Patterns**: Point to similar implementations in the Smogon damage-calc repository
+- **Incremental Development**: Build one calculation type at a time (stats → damage → advanced mechanics)
+
+### Common Development Tasks
+- **Adding Pokemon Data**: Create strongly-typed models with validation
+- **Implementing Calculations**: Start with basic formulas, add modifiers incrementally  
+- **Battle Mechanics**: Model field effects, abilities, and items as separate concerns
+- **Performance**: Use value types and avoid unnecessary allocations in hot paths
